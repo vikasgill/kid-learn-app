@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Kid Learn App</string>
+    <string name="title_activity_main">Kid Learn App</string>
+    <string name="package_name">com.vikashgill.kidlearn</string>
+    <string name="custom_url_scheme">com.vikashgill.kidlearn</string>
+</resources>

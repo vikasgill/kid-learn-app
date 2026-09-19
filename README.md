@@ -1,16 +1,63 @@
-# React + Vite
+# 🎒 Kid's Learning App
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A bilingual (Hindi + English) learning app for kids (5+) covering Hindi, English, and Math — built for tracing/writing practice on screen, with printable worksheets for offline practice on paper.
 
-Currently, two official plugins are available:
+**Live app:** https://vikasgill.github.io/kid-learn-app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
+- ✍️ **Trace mode** – draw/write with finger, mouse, or stylus over a faint letter/number guide
+- 🔤 **Choose mode** – tap the correct letter/number (multiple choice)
+- 🖨️ **Print Worksheet** – generates a printable page (name/class fields, instructions, picture + blank) matching classic worksheet styles, for offline paper practice
+- ⭐ Progress and stars saved locally (offline-first, no account needed)
+- Subjects: Hindi (2-akshar/two-syllable words), English (A–Z alphabet tracing), Math (number tracing & counting 1–20)
 
-## React Compiler
+## Tech stack
+- React + Vite
+- React Router (HashRouter, works on static hosting)
+- Capacitor (Android wrapper)
+- localStorage for progress persistence
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Development
 
-## Expanding the Oxlint configuration
+```bash
+npm install
+npm run dev        # start local dev server
+npm run build       # production build for the web (GitHub Pages) -> dist/
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Deploying the web app
+Pushing to `master` automatically builds and deploys to GitHub Pages via
+`.github/workflows/deploy-pages.yml`. Live at:
+https://vikasgill.github.io/kid-learn-app/
+
+## Building the Android app
+
+The Android project lives in `android/` (generated via Capacitor). It needs
+its own build (base path `/`, separate output dir) since GitHub Pages is
+served from a sub-path (`/kid-learn-app/`) while the Android app serves
+files from its own root.
+
+```bash
+npm run build:android   # builds to dist-android/ and runs `cap sync android`
+cd android
+./gradlew assembleDebug          # debug APK -> android/app/build/outputs/apk/debug/app-debug.apk
+# or open the `android/` folder in Android Studio to build/run directly
+```
+
+Requirements: JDK 17+ (Capacitor 8 / AGP require **JDK 21**) and the Android
+SDK (`ANDROID_HOME` / `android/local.properties` → `sdk.dir`).
+
+Install the debug APK on a device:
+```bash
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+## Project structure
+```
+src/
+  data/        Hindi/English/Math worksheet content
+  components/  TracingCanvas, MultipleChoice
+  pages/       Home, HindiWorksheet, EnglishWorksheet, MathWorksheet, PrintWorksheet
+  utils/       progress.js (localStorage progress tracking)
+android/        Capacitor-generated native Android project
+```
